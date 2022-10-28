@@ -1,6 +1,5 @@
 // General set-up steps
     // 1. Create server.js file
-    // 2. Create routes folder with apiRoutes.js and htmlRoutes.js files
     // 3. npm install express
 
 // Import dependencies
@@ -20,13 +19,21 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(express.static('public'));
 
+app.get('/api/notes', (req, res) => {
+    res.json(noteEntries.slice(1));
+});
+
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, './Develop/public/index.html'));
+});
+
 // HTML routes
 app.get('/notes', (req, res) => {
-    res.sendFile(path.join(__dirname, './public/notes.html'));
+    res.sendFile(path.join(__dirname, './Develop/public/notes.html'));
 });
 
 app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, './public/index.html'));
+    res.sendFile(path.join(__dirname, './Develop/public/index.html'));
 });
 
 // Sets the function to create a new note
@@ -47,7 +54,7 @@ function newNoteEntry (body, notesArray) {
         JSON.stringify(notesArray, null, 2)
     );
     return newNote;
-}
+};
 
 // Post route for submitting notes
 app.post('/api/notes', (req, res) => {
@@ -56,5 +63,5 @@ app.post('/api/notes', (req, res) => {
 });
 
 app.listen(PORT, () => {
-  console.log(`App listening at http://localhost:${PORT} 🚀`)
+    console.log(`API server now on port ${PORT}!`);
 });
